@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Bo/vhBuLz6yAgxtsoxzmxOACEfRFw9GX0puOjhoRCoA58NGwVs4pweaqDV7cgDA2++GVtb8ueSLUipIOWOrFsQ==",
+  "dgSpecHash": "BCaOFGvrn2AlAlG3NafAQL5c2Nzp7bjDs/9SOhwW8i9wG9pyDyZIBU7VeOu9gxfXp56iTN7RFqZqOpyeRU2PHw==",
   "success": true,
   "projectFilePath": "C:\\Users\\ns106726\\HousingPortalCodebase\\HousingPortalServer\\HousingPortalApi\\HousingPortalApi.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.entityframeworkcore.design\\7.0.4\\microsoft.entityframeworkcore.design.7.0.4.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.4\\microsoft.entityframeworkcore.relational.7.0.4.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\7.0.4\\microsoft.entityframeworkcore.sqlserver.7.0.4.nupkg.sha512",
+    "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\7.0.4\\microsoft.entityframeworkcore.tools.7.0.4.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
