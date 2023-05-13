@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "j37qxPxY5gfqY+qaeZOfuAftCER0jR9+Gp4pz4xJamW/z2vr3AqoJ9tk0x3vFBRgPAPzJP/zQUW2vJ8VrYqZcQ==",
+  "dgSpecHash": "2an0u9vqKIIkO4tOBHb9i4AytPV+7unO46JEpL0WT4mdSGa1qlNUJF3D5IxajJve8teoMd50aOdGVV1n80BvyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ns106726\\HousingPortalCodebase\\HousingPortalServer\\HousingPortalApi\\HousingPortalApi.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,7 @@
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.2.0\\microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.5\\microsoft.aspnetcore.authentication.jwtbearer.7.0.5.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.4\\microsoft.aspnetcore.cryptography.internal.7.0.4.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.4\\microsoft.aspnetcore.cryptography.keyderivation.7.0.4.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",

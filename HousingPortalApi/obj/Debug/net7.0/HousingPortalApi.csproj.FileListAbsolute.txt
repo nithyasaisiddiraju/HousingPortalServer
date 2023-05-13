@@ -113,3 +113,4 @@ C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
