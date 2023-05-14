@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2an0u9vqKIIkO4tOBHb9i4AytPV+7unO46JEpL0WT4mdSGa1qlNUJF3D5IxajJve8teoMd50aOdGVV1n80BvyQ==",
+  "dgSpecHash": "+riDYO/Q6LmD17Lfq8zUmPq6wtkg5GK6hhvjOO8beHlpfPT/AzkThlh11HaQil9xygBzu06H/1QonrAE2Y+epw==",
   "success": true,
   "projectFilePath": "C:\\Users\\ns106726\\HousingPortalCodebase\\HousingPortalServer\\HousingPortalApi\\HousingPortalApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ns106726\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\ns106726\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\ns106726\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

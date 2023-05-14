@@ -1,4 +1,4 @@
-﻿namespace HousingPortalApi.Data
+﻿namespace HousingPortalApi.Dtos
 {
     public class LoginRequest
     {

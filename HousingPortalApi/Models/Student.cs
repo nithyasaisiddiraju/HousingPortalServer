@@ -21,11 +21,14 @@ namespace HousingPortalApi.Models
 
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string Major { get; set; }
 
+        [Required]
+        [Range(1000, 9999)]
         public int GraduationYear { get; set; }
 
         [InverseProperty("Student")]

@@ -14,18 +14,19 @@ namespace HousingPortalApi.Models
 
         [StringLength(1000)]
         public string Description { get; set; }
-
+        [Required]
         public string Address { get; set; }
-
+        [Required]
         public decimal Price { get; set; }
-
-        [StringLength(15)]
-        public string Contact { get; set; }
-
+        [Required]
         [StringLength(100)]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
+        public string City { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Image { get; set; }
+        [Required]
         public Guid StudentId { get; set; }
 
         [ForeignKey("StudentId")]

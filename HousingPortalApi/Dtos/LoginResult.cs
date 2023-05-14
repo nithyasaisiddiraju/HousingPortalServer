@@ -1,9 +1,9 @@
-﻿namespace HousingPortalApi.Data
+﻿namespace HousingPortalApi.Dtos
 {
     public class LoginResult
     {
         public bool Success { get; set; }
         public string Message { get; set; } = null!;
-        public string? Token { get; set; }
+        public string Token { get; set; }
     }
 }

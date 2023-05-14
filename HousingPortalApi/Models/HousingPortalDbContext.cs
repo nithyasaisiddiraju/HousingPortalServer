@@ -1,15 +1,13 @@
-﻿using HousingPortalApi.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HousingPortalApi.Data
+namespace HousingPortalApi.Models
 {
     public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>
     {
         public HousingPortalDbContext(DbContextOptions options) : base(options)
         {
         }
-
         public DbSet<Listing> Listings { get; set; }
         public DbSet<Student> Students { get; set; }
 
@@ -32,13 +30,14 @@ namespace HousingPortalApi.Data
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.PhoneNumber)
+                entity.Property(e => e.Phone)
                     .HasMaxLength(20);
 
                 entity.Property(e => e.Major)
                     .HasMaxLength(100);
 
-                entity.Property(e => e.GraduationYear);
+                entity.Property(e => e.GraduationYear)
+                    .HasMaxLength(4); ;
             });
 
             // One student can have multiple listings, and each listing is associated with a specific student

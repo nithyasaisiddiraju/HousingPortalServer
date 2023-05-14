@@ -17,11 +17,11 @@ namespace HousingPortalApi
             _userManager = userManager;
         }
 
-        public async Task<JwtSecurityToken> GetTokenAsync(HousingPortalUser user) =>
+        public async Task<JwtSecurityToken> GetTokenAsync(HousingPortalUser user, Claim[] additionalClaims = null) =>
             new(
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
-                claims: await GetClaimsAsync(user),
+                claims: await GetClaimsAsync(user, additionalClaims),
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtSettings:ExpirationTimeInMinutes"])),
                 signingCredentials: GetSigningCredentials());
 
@@ -32,12 +32,19 @@ namespace HousingPortalApi
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        private async Task<List<Claim>> GetClaimsAsync(HousingPortalUser user)
+        private async Task<List<Claim>> GetClaimsAsync(HousingPortalUser user, Claim[] additionalClaims)
         {
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, user.UserName!)
+                new Claim(ClaimTypes.Name, user.UserName!),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
+
+            if (additionalClaims != null)
+            {
+                claims.AddRange(additionalClaims);
+            }
+
             claims.AddRange(from role in await _userManager.GetRolesAsync(user) select new Claim(ClaimTypes.Role, role));
             return claims;
         }

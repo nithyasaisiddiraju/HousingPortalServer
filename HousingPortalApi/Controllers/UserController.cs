@@ -1,9 +1,10 @@
-﻿using HousingPortalApi.Data;
+﻿using HousingPortalApi.Dtos;
 using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace HousingPortalApi.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            var user = await _userManager.FindByNameAsync(loginRequest.Username);
+            HousingPortalUser? user = await _userManager.FindByNameAsync(loginRequest.Username);
 
             if (user == null)
             {
@@ -40,9 +41,9 @@ namespace HousingPortalApi.Controllers
             {
                 return Unauthorized(new LoginResult { Success = false, Message = "Incorrect password." });
             }
+            JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
 
-            var secToken = await _jwtHandler.GetTokenAsync(user);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
+            string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
             return Ok(new LoginResult { Success = true, Message = "Login successful", Token = jwt });
         }
@@ -65,7 +66,7 @@ namespace HousingPortalApi.Controllers
                 return BadRequest(new RegisterResult { Success = false, Message = "Password is too weak. It should be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character." });
             }
 
-            var user = new HousingPortalUser { UserName = registerRequest.Username, Email = registerRequest.Email };
+            HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.Username, Email = registerRequest.Email };
             user.PasswordHash = _passwordHasher.HashPassword(user, registerRequest.Password);
             var result = await _userManager.CreateAsync(user);
 
@@ -74,8 +75,8 @@ namespace HousingPortalApi.Controllers
                 return BadRequest(new RegisterResult { Success = false, Message = "Registration failed. Try again." });
             }
 
-            var secToken = await _jwtHandler.GetTokenAsync(user);
-            var jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
+            JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
+            string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
             return Ok(new RegisterResult { Success = true, Message = "Registration successful", Token = jwt });
         }
