@@ -1,11 +1,11 @@
-﻿using HousingPortalApi.Dtos;
+﻿using CsvHelper.Configuration;
+using HousingPortalApi.Dtos;
 using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
+using CsvReader = CsvHelper.CsvReader;
 
 namespace HousingPortalApi.Controllers
 {
@@ -13,7 +13,7 @@ namespace HousingPortalApi.Controllers
     [ApiController]
     public class SeedController : ControllerBase
     {
-        private readonly UserManager<HousingPortalUser> _userManager;
+        /*private readonly UserManager<HousingPortalUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly HousingPortalDbContext _context;
@@ -34,10 +34,10 @@ namespace HousingPortalApi.Controllers
         {
             Console.WriteLine("ImportListings started");
             Dictionary<Guid, Listing> listingsById = _context.Listings.AsNoTracking()
-                .ToDictionary(x => x.Id, x => x);
+                .ToDictionary(x => x.listingId, x => x);
 
             Dictionary<Guid, Student> studentsById = _context.Students.AsNoTracking()
-                .ToDictionary(x => x.Id, x => x);
+                .ToDictionary(x => x.studentId, x => x);
 
             CsvConfiguration config = new(CultureInfo.InvariantCulture)
             {
@@ -181,6 +181,6 @@ namespace HousingPortalApi.Controllers
                 Users = addedUserList
             });
 
-        }
+        }*/
     }
 }

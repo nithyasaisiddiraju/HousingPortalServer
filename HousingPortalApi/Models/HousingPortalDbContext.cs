@@ -16,35 +16,35 @@ namespace HousingPortalApi.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Listing>(entity =>
             {
-                entity.Property(e => e.Price)
+                entity.Property(e => e.price)
                     .HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.Property(e => e.Name)
+                entity.Property(e => e.name)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Email)
+                entity.Property(e => e.email)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Phone)
+                entity.Property(e => e.phone)
                     .HasMaxLength(20);
 
-                entity.Property(e => e.Major)
+                entity.Property(e => e.major)
                     .HasMaxLength(100);
 
-                entity.Property(e => e.GraduationYear)
+                entity.Property(e => e.graduationYear)
                     .HasMaxLength(4); ;
             });
 
             // One student can have multiple listings, and each listing is associated with a specific student
             modelBuilder.Entity<Listing>()
-                .HasOne(listing => listing.Student)
-                .WithMany(student => student.Listings)
-                .HasForeignKey(listing => listing.StudentId);
+                .HasOne(listing => listing.student)
+                .WithMany(student => student.listings)
+                .HasForeignKey(listing => listing.studentId);
         }
     }
 }

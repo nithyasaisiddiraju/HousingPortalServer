@@ -4,33 +4,32 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HousingPortalApi.Models
 {
-    public class Listing
+    public class Listing : AuditEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid listingId { get; set; }
 
         [StringLength(100)]
-        public string Title { get; set; }
+        public string title { get; set; }
 
         [StringLength(1000)]
-        public string Description { get; set; }
+        public string description { get; set; }
         [Required]
-        public string Address { get; set; }
+        public string address { get; set; }
         [Required]
-        public decimal Price { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string City { get; set; }
+        public decimal price { get; set; }
         [Required]
         [StringLength(100)]
-        public string State { get; set; }
-        public string Zip { get; set; }
-        public string Image { get; set; }
+        public string city { get; set; }
         [Required]
-        public Guid StudentId { get; set; }
+        [StringLength(100)]
+        public string state { get; set; }
+        public string zip { get; set; }
+        public string image { get; set; }
 
-        [ForeignKey("StudentId")]
-        [InverseProperty("Listings")]
-        public virtual Student Student { get; set; }
+        [ForeignKey("Student")]
+        public Guid studentId { get; set; }
+        public virtual Student student { get; set; }
+ 
     }
 }

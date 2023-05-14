@@ -5,33 +5,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HousingPortalApi.Models
 {
-    public class Student
+    public class Student : AuditEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid studentId { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string name { get; set; }
 
         [Required]
         [StringLength(100)]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string email { get; set; }
 
         [StringLength(20)]
         [DataType(DataType.PhoneNumber)]
-        public string Phone { get; set; }
+        public string phone { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Major { get; set; }
+        public string major { get; set; }
 
         [Required]
         [Range(1000, 9999)]
-        public int GraduationYear { get; set; }
+        public int graduationYear { get; set; }
 
-        [InverseProperty("Student")]
-        public virtual ICollection<Listing> Listings { get; set; } = new List<Listing>();
+        [InverseProperty("student")]
+        public virtual ICollection<Listing> listings { get; set; } = new List<Listing>();
     }
 }
