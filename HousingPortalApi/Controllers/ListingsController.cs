@@ -252,7 +252,6 @@ namespace HousingPortalApi.Controllers
             return Ok(updatedListingDto);
         }
 
-
         // DELETE: api/Listings/5
         [HttpDelete]
         [Route("{id:Guid}")]

@@ -1,5 +1,7 @@
 ﻿using HousingPortalApi.Dtos;
 using HousingPortalApi.Models;
+using HousingPortalApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,14 +19,17 @@ namespace HousingPortalApi.Controllers
         private readonly UserManager<HousingPortalUser> _userManager;
         private readonly JwtHandler _jwtHandler;
         private readonly PasswordHasher<HousingPortalUser> _passwordHasher;
+        private readonly StudentService _studentService;
 
         private readonly Regex passwordCheck = new Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=])[A-Za-z\\d!@#$%^&*()_+=]{8,}$");
 
-        public UserController(UserManager<HousingPortalUser> userManager, JwtHandler jwtHandler, PasswordHasher<HousingPortalUser> passwordHasher)
+        public UserController(UserManager<HousingPortalUser> userManager, JwtHandler jwtHandler, PasswordHasher<HousingPortalUser> passwordHasher,
+            StudentService studentService)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
             _passwordHasher = passwordHasher;
+            _studentService = studentService;
         }
 
         [HttpPost("authenticate")]
@@ -79,6 +84,17 @@ namespace HousingPortalApi.Controllers
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
             return Ok(new RegisterResult { Success = true, Message = "Registration successful", Token = jwt });
+        }
+
+        [HttpGet("{studentId}")]
+        public async Task<ActionResult<StudentDto>> GetStudentDetails(Guid studentId)
+        {
+            var studentDto = await _studentService.GetStudentDetails(studentId);
+            if (studentDto == null)
+            {
+                return NotFound();
+            }
+            return Ok(studentDto);
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using HousingPortalApi.Models;
 using Microsoft.OpenApi.Models;
 using HousingPortalApi;
+using HousingPortalApi.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<JwtHandler>();
+builder.Services.AddScoped<StudentService>();
 
 WebApplication app = builder.Build();
 
