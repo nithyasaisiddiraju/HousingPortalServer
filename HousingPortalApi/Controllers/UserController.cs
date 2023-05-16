@@ -1,4 +1,5 @@
-﻿using HousingPortalApi.Dtos;
+﻿using HousingPortalApi.Data;
+using HousingPortalApi.Dtos;
 using HousingPortalApi.Models;
 using HousingPortalApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HousingPortalApi.Controllers
 {
@@ -20,16 +22,16 @@ namespace HousingPortalApi.Controllers
         private readonly JwtHandler _jwtHandler;
         private readonly PasswordHasher<HousingPortalUser> _passwordHasher;
         private readonly StudentService _studentService;
-
         private readonly Regex passwordCheck = new Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=])[A-Za-z\\d!@#$%^&*()_+=]{8,}$");
-
+        private readonly HousingPortalDbContext _housingPortalDbContext;
         public UserController(UserManager<HousingPortalUser> userManager, JwtHandler jwtHandler, PasswordHasher<HousingPortalUser> passwordHasher,
-            StudentService studentService)
+            StudentService studentService, HousingPortalDbContext housingPortalDbContext)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
             _passwordHasher = passwordHasher;
             _studentService = studentService;
+            _housingPortalDbContext = housingPortalDbContext;
         }
 
         [HttpPost("authenticate")]
@@ -95,6 +97,39 @@ namespace HousingPortalApi.Controllers
                 return NotFound();
             }
             return Ok(studentDto);
+        }
+
+        [HttpGet("{studentId}/listings")]
+        public async Task<ActionResult<List<ListingDto>>> GetStudentListings(Guid studentId)
+        {
+            var listings = await _housingPortalDbContext.Listings
+                .Include(l => l.student)
+                .Where(l => l.studentId == studentId)
+                .ToListAsync();
+
+            var listingDtos = listings.Select(l => new ListingDto
+            {
+                listingId = l.listingId,
+                title = l.title,
+                description = l.description,
+                address = l.address,
+                price = l.price,
+                city = l.city,
+                state = l.state,
+                zip = l.zip,
+                image = l.image,
+                studentDto = new StudentDto
+                {
+                    studentId = l.student.studentId,
+                    name = l.student.name,
+                    email = l.student.email,
+                    phone = l.student.phone,
+                    major = l.student.major,
+                    graduationYear = l.student.graduationYear
+                }
+            }).ToList();
+
+            return Ok(listingDtos);
         }
     }
 }

@@ -146,7 +146,7 @@ namespace HousingPortalApi.Controllers
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
           Listing? listing = await _housingPortalDbContext.Listings
-         .Include(l => l.student) // Include the related Student
+         .Include(l => l.student)
          .FirstOrDefaultAsync(x => x.listingId == id);
 
             if (listing == null)
@@ -184,7 +184,7 @@ namespace HousingPortalApi.Controllers
         // PUT: api/Listings/5
         [HttpPut]
         [Route("{id:Guid}")]
-        [Authorize] // Ensuring only authenticated users can access this method
+        [Authorize]
         public async Task<IActionResult> UpdateListing([FromRoute] Guid id, [FromBody] ListingDto updateListingDto)
         {
             if (!ModelState.IsValid)
@@ -192,7 +192,6 @@ namespace HousingPortalApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Get the logged-in user's ID
             string loggedInStudentId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             Guid studentId;
             if (!Guid.TryParse(loggedInStudentId, out studentId))
@@ -202,7 +201,7 @@ namespace HousingPortalApi.Controllers
             }
 
             Listing? listing = await _housingPortalDbContext.Listings
-                .Include(l => l.student) // Load the Student entity
+                .Include(l => l.student)
                 .FirstOrDefaultAsync(l => l.listingId == id);
 
             if (listing == null)
@@ -210,7 +209,6 @@ namespace HousingPortalApi.Controllers
                 return NotFound("Listing not found with the provided ID.");
             }
 
-            // Check if the logged-in user is the owner of the listing
             if (listing.studentId != studentId)
             {
                 return BadRequest("You do not have permission to update this listing.");
@@ -255,10 +253,9 @@ namespace HousingPortalApi.Controllers
         // DELETE: api/Listings/5
         [HttpDelete]
         [Route("{id:Guid}")]
-        [Authorize] // Ensuring only authenticated users can access this method
+        [Authorize]
         public async Task<IActionResult> DeleteListing([FromRoute] Guid id)
         {
-            // Get the logged-in user's ID
             string loggedInStudentId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             Guid studentId;
             if (!Guid.TryParse(loggedInStudentId, out studentId))
@@ -268,7 +265,7 @@ namespace HousingPortalApi.Controllers
             }
 
             Listing? listing = await _housingPortalDbContext.Listings
-                .Include(l => l.student) // Include the related Student
+                .Include(l => l.student)
                 .FirstOrDefaultAsync(x => x.listingId == id);
 
             if (listing == null)
@@ -276,7 +273,6 @@ namespace HousingPortalApi.Controllers
                 return NotFound("Listing not found with the provided ID.");
             }
 
-            // Check if the logged-in user is the owner of the listing
             if (listing.studentId != studentId)
             {
                 return BadRequest("You do not have permission to delete this listing.");

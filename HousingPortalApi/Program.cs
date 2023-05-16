@@ -9,7 +9,6 @@ using HousingPortalApi.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddScoped<PasswordHasher<HousingPortalUser>>();
 builder.Services.AddEndpointsApiExplorer();
