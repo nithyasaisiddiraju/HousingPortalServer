@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HousingPortalApi.Interfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousingPortalApi.Models
 {
-    public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>
+    public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>, IHousingPortalDbContext
     {
-        public HousingPortalDbContext(DbContextOptions options) : base(options)
+        public HousingPortalDbContext(DbContextOptions<HousingPortalDbContext> options) : base(options)
         {
         }
         public DbSet<Listing> Listings { get; set; }

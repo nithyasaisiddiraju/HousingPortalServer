@@ -37,55 +37,70 @@ namespace HousingPortalApi.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            HousingPortalUser? user = await _userManager.FindByNameAsync(loginRequest.Username);
+            HousingPortalUser? user = await _userManager.FindByNameAsync(loginRequest.username);
 
             if (user == null)
             {
-                return Unauthorized(new LoginResult { Success = false, Message = "User not found." });
+                return Unauthorized(new LoginResult { success = false, message = "User not found." });
             }
 
-            if (_passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginRequest.Password) != PasswordVerificationResult.Success)
+            if (_passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginRequest.password) != PasswordVerificationResult.Success)
             {
-                return Unauthorized(new LoginResult { Success = false, Message = "Incorrect password." });
+                return Unauthorized(new LoginResult { success = false, message = "Incorrect password." });
             }
             JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
 
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
-            return Ok(new LoginResult { Success = true, Message = "Login successful", Token = jwt });
+            return Ok(new LoginResult { success = true, message = "Login successful", token = jwt });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            if (await _userManager.FindByNameAsync(registerRequest.Username) != null)
+            if (await _userManager.FindByNameAsync(registerRequest.username) != null)
             {
-                return BadRequest(new RegisterResult { Success = false, Message = "Username already exists." });
+                return BadRequest(new RegisterResult { success = false, message = "Username already exists." });
             }
 
-            if (await _userManager.FindByEmailAsync(registerRequest.Email) != null)
+            if (await _userManager.FindByEmailAsync(registerRequest.email) != null)
             {
-                return BadRequest(new RegisterResult { Success = false, Message = "Email already exists." });
+                return BadRequest(new RegisterResult { success = false, message = "Email already exists." });
             }
 
-            if (!passwordCheck.IsMatch(registerRequest.Password))
+            if (!passwordCheck.IsMatch(registerRequest.password))
             {
-                return BadRequest(new RegisterResult { Success = false, Message = "Password is too weak. It should be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character." });
+                return BadRequest(new RegisterResult { success = false, message = "Password is too weak. It should be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character." });
             }
 
-            HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.Username, Email = registerRequest.Email };
-            user.PasswordHash = _passwordHasher.HashPassword(user, registerRequest.Password);
+            HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.username, Email = registerRequest.email };
+            user.PasswordHash = _passwordHasher.HashPassword(user, registerRequest.password);
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
             {
-                return BadRequest(new RegisterResult { Success = false, Message = "Registration failed. Try again." });
+                return BadRequest(new RegisterResult { success = false, message = "Registration failed. Try again." });
             }
+
+            Student registeredStudent = new Student
+            {
+                studentId = Guid.Parse(user.Id),
+                name = registerRequest.username,
+                email = registerRequest.email,
+                phone = registerRequest.phone,
+                major = registerRequest.major,
+                graduationYear = registerRequest.graduationYear
+            };
+
+            _housingPortalDbContext.Students.Add(registeredStudent);
+            await _housingPortalDbContext.SaveChangesAsync();
 
             JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
-            return Ok(new RegisterResult { Success = true, Message = "Registration successful", Token = jwt });
+            return Ok(new RegisterResult { success = true, message = "Registration successful", token = jwt });
+
+
         }
 
         [HttpGet("{studentId}")]

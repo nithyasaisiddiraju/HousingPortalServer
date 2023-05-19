@@ -6,6 +6,7 @@ using HousingPortalApi.Models;
 using Microsoft.OpenApi.Models;
 using HousingPortalApi;
 using HousingPortalApi.Services;
+using HousingPortalApi.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -49,11 +50,12 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-builder.Services.AddDbContext<HousingPortalDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("HousingPortalConnection")));
+builder.Services.AddDbContext<IHousingPortalDbContext, HousingPortalDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection")));
 
 builder.Services.AddIdentity<HousingPortalUser, IdentityRole>()
     .AddEntityFrameworkStores<HousingPortalDbContext>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,6 +79,14 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<JwtHandler>();
 builder.Services.AddScoped<StudentService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowMyOrigin",
+            builder => builder.WithOrigins("http://localhost:4200")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod());
+});
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -87,7 +97,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors();
 
 app.UseAuthentication();
 

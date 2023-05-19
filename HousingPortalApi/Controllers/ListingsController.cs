@@ -1,4 +1,5 @@
 ﻿using HousingPortalApi.Dtos;
+using HousingPortalApi.Interfaces;
 using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,10 +16,12 @@ namespace HousingPortalApi.Controllers
     {
        private readonly HousingPortalDbContext _housingPortalDbContext;
        private readonly IWebHostEnvironment _hostingEnvironment;
-        public ListingsController(HousingPortalDbContext housingPortalDbContext, IWebHostEnvironment hostingEnvironment)
+       private readonly IHousingPortalDbContext _context;
+        public ListingsController(IWebHostEnvironment hostingEnvironment,
+            IHousingPortalDbContext context)
         {
-            _housingPortalDbContext = housingPortalDbContext;
             _hostingEnvironment = hostingEnvironment;
+            _housingPortalDbContext = context;
         }
 
         // GET: api/Listings
