@@ -6,7 +6,6 @@ using HousingPortalApi.Models;
 using Microsoft.OpenApi.Models;
 using HousingPortalApi;
 using HousingPortalApi.Services;
-using HousingPortalApi.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -50,12 +49,11 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
-builder.Services.AddDbContext<IHousingPortalDbContext, HousingPortalDbContext>(options =>
+builder.Services.AddDbContext<HousingPortalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection")));
 
 builder.Services.AddIdentity<HousingPortalUser, IdentityRole>()
     .AddEntityFrameworkStores<HousingPortalDbContext>();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

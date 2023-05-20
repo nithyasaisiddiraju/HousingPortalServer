@@ -1,5 +1,4 @@
 ﻿using HousingPortalApi.Dtos;
-using HousingPortalApi.Interfaces;
 using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,14 +13,12 @@ namespace HousingPortalApi.Controllers
     [Route("api/[controller]")]
     public class ListingsController : ControllerBase
     {
-       private readonly HousingPortalDbContext _housingPortalDbContext;
-       private readonly IWebHostEnvironment _hostingEnvironment;
-       private readonly IHousingPortalDbContext _context;
-        public ListingsController(IWebHostEnvironment hostingEnvironment,
-            IHousingPortalDbContext context)
+        private readonly HousingPortalDbContext _housingPortalDbContext;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ListingsController(HousingPortalDbContext housingPortalDbContext, IWebHostEnvironment hostingEnvironment)
         {
+            _housingPortalDbContext = housingPortalDbContext;
             _hostingEnvironment = hostingEnvironment;
-            _housingPortalDbContext = context;
         }
 
         // GET: api/Listings
@@ -148,9 +145,9 @@ namespace HousingPortalApi.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
-          Listing? listing = await _housingPortalDbContext.Listings
-         .Include(l => l.student)
-         .FirstOrDefaultAsync(x => x.listingId == id);
+            Listing? listing = await _housingPortalDbContext.Listings
+           .Include(l => l.student)
+           .FirstOrDefaultAsync(x => x.listingId == id);
 
             if (listing == null)
             {
