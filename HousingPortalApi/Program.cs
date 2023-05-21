@@ -6,6 +6,7 @@ using HousingPortalApi.Models;
 using Microsoft.OpenApi.Models;
 using HousingPortalApi;
 using HousingPortalApi.Services;
+using HousingPortalApi.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -52,8 +53,12 @@ builder.Services.AddSwaggerGen(c => {
 builder.Services.AddDbContext<HousingPortalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProdConnection")));
 
+builder.Services.AddScoped<IHousingPortalDbContext>(provider => provider.GetService<HousingPortalDbContext>());
+builder.Services.AddScoped<IStudentService, StudentService>();
+
 builder.Services.AddIdentity<HousingPortalUser, IdentityRole>()
     .AddEntityFrameworkStores<HousingPortalDbContext>();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,8 +79,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped<JwtHandler>();
+builder.Services.AddScoped<IJwtHandler, JwtHandler>();
 builder.Services.AddScoped<StudentService>();
+builder.Services.AddScoped<IPasswordHasherWrapper, PasswordHasherWrapper>();
+
 
 builder.Services.AddCors(options =>
 {

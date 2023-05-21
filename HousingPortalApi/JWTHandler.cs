@@ -4,10 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using HousingPortalApi.Models;
+using HousingPortalApi.Interfaces;
 
 namespace HousingPortalApi
 {
-    public class JwtHandler
+    public class JwtHandler : IJwtHandler
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<HousingPortalUser> _userManager;

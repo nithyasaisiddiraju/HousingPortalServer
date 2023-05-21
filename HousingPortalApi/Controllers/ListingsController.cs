@@ -1,4 +1,5 @@
 ﻿using HousingPortalApi.Dtos;
+using HousingPortalApi.Interfaces;
 using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +14,11 @@ namespace HousingPortalApi.Controllers
     [Route("api/[controller]")]
     public class ListingsController : ControllerBase
     {
-        private readonly HousingPortalDbContext _housingPortalDbContext;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        public ListingsController(HousingPortalDbContext housingPortalDbContext, IWebHostEnvironment hostingEnvironment)
+        private readonly IHousingPortalDbContext _housingPortalDbContext;
+
+        public ListingsController(IHousingPortalDbContext housingPortalDbContext)
         {
             _housingPortalDbContext = housingPortalDbContext;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Listings
@@ -83,7 +83,6 @@ namespace HousingPortalApi.Controllers
                 return NotFound(new { message = $"No student found with ID: {studentId}" });
             }
 
-            // Check for existing listing with the same title, description, and address
             var existingListing = await _housingPortalDbContext.Listings
                 .FirstOrDefaultAsync(l => l.title == listingDto.title &&
                                           l.description == listingDto.description &&

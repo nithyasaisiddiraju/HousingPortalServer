@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using HousingPortalApi.Interfaces;
 
 namespace HousingPortalApi.Controllers
 {
@@ -19,17 +20,17 @@ namespace HousingPortalApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<HousingPortalUser> _userManager;
-        private readonly JwtHandler _jwtHandler;
-        private readonly PasswordHasher<HousingPortalUser> _passwordHasher;
-        private readonly StudentService _studentService;
+        private readonly IJwtHandler _jwtHandler;
+        private readonly IStudentService _studentService;
         private readonly Regex passwordCheck = new Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=])[A-Za-z\\d!@#$%^&*()_+=]{8,}$");
-        private readonly HousingPortalDbContext _housingPortalDbContext;
-        public UserController(UserManager<HousingPortalUser> userManager, JwtHandler jwtHandler, PasswordHasher<HousingPortalUser> passwordHasher,
-            StudentService studentService, HousingPortalDbContext housingPortalDbContext)
+        public HousingPortalDbContext _housingPortalDbContext;
+        private readonly IPasswordHasherWrapper _passwordHasherWrapper;
+        public UserController(UserManager<HousingPortalUser> userManager, IJwtHandler jwtHandler, IPasswordHasher<HousingPortalUser> passwordHasher,
+        IStudentService studentService, HousingPortalDbContext housingPortalDbContext, IPasswordHasherWrapper passwordHasherWrapper)
         {
             _userManager = userManager;
             _jwtHandler = jwtHandler;
-            _passwordHasher = passwordHasher;
+            _passwordHasherWrapper = passwordHasherWrapper;
             _studentService = studentService;
             _housingPortalDbContext = housingPortalDbContext;
         }
@@ -44,7 +45,7 @@ namespace HousingPortalApi.Controllers
                 return Unauthorized(new LoginResult { success = false, message = "User not found." });
             }
 
-            if (_passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginRequest.password) != PasswordVerificationResult.Success)
+            if (_passwordHasherWrapper.VerifyHashedPassword(user, user.PasswordHash, loginRequest.password) != PasswordVerificationResult.Success)
             {
                 return Unauthorized(new LoginResult { success = false, message = "Incorrect password." });
             }
@@ -74,7 +75,7 @@ namespace HousingPortalApi.Controllers
             }
 
             HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.username, Email = registerRequest.email };
-            user.PasswordHash = _passwordHasher.HashPassword(user, registerRequest.password);
+            user.PasswordHash = _passwordHasherWrapper.HashPassword(user, registerRequest.password);
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)

@@ -1,15 +1,24 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using HousingPortalApi.Interfaces;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HousingPortalApi.Models
 {
-    public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>
+    public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>, IHousingPortalDbContext
     {
         public HousingPortalDbContext(DbContextOptions options) : base(options)
         {
         }
+
         public DbSet<Listing> Listings { get; set; }
         public DbSet<Student> Students { get; set; }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

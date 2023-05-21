@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using HousingPortalApi.Models;
 using HousingPortalApi.Dtos;
 using Microsoft.EntityFrameworkCore;
+using HousingPortalApi.Interfaces;
 
 namespace HousingPortalApi.Services
 {
-    public class StudentService
+    public class StudentService : IStudentService
     {
         private readonly HousingPortalDbContext _context;
 

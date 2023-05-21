@@ -31,9 +31,9 @@ C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\Hou
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\HousingPortalApi\obj\Debug\net7.0\HousingPortalApi.pdb
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\HousingPortalApi\obj\Debug\net7.0\HousingPortalApi.genruntimeconfig.cache
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\HousingPortalApi\obj\Debug\net7.0\ref\HousingPortalApi.dll
+C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\HousingPortalApi.exe
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\appsettings.json
-C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\HousingPortalApi.exe
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\HousingPortalApi.deps.json
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\HousingPortalApi.runtimeconfig.json
 C:\Users\ns106726\HousingPortalCodebase\HousingPortalServer\HousingPortalApi\bin\Debug\net7.0\HousingPortalApi.dll
