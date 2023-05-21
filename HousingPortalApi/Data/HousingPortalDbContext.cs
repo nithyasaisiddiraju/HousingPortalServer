@@ -1,10 +1,11 @@
 ﻿using HousingPortalApi.Interfaces;
+using HousingPortalApi.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HousingPortalApi.Models
+namespace HousingPortalApi.Data
 {
     public class HousingPortalDbContext : IdentityDbContext<HousingPortalUser>, IHousingPortalDbContext
     {
@@ -25,35 +26,35 @@ namespace HousingPortalApi.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Listing>(entity =>
             {
-                entity.Property(e => e.price)
+                entity.Property(e => e.Price)
                     .HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.Property(e => e.name)
+                entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.email)
+                entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.phone)
+                entity.Property(e => e.Phone)
                     .HasMaxLength(20);
 
-                entity.Property(e => e.major)
+                entity.Property(e => e.Major)
                     .HasMaxLength(100);
 
-                entity.Property(e => e.graduationYear)
+                entity.Property(e => e.GraduationYear)
                     .HasMaxLength(4); ;
             });
 
             // One student can have multiple listings, and each listing is associated with a specific student
             modelBuilder.Entity<Listing>()
-                .HasOne(listing => listing.student)
-                .WithMany(student => student.listings)
-                .HasForeignKey(listing => listing.studentId);
+                .HasOne(listing => listing.Student)
+                .WithMany(student => student.Listings)
+                .HasForeignKey(listing => listing.StudentId);
         }
     }
 }

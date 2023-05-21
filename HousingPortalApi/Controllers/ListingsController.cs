@@ -25,27 +25,27 @@ namespace HousingPortalApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllListings()
         {
-            List<Listing> listings = await _housingPortalDbContext.Listings.Include(l => l.student).ToListAsync();
+            List<Listing> listings = await _housingPortalDbContext.Listings.Include(l => l.Student).ToListAsync();
 
             List<ListingDto> listingDtos = listings.Select(l => new ListingDto
             {
-                listingId = l.listingId,
-                title = l.title,
-                description = l.description,
-                address = l.address,
-                price = l.price,
-                city = l.city,
-                state = l.state,
-                zip = l.zip,
-                image = l.image,
-                studentDto = l.student != null ? new StudentDto
+                ListingId = l.ListingId,
+                Title = l.Title,
+                Description = l.Description,
+                Address = l.Address,
+                Price = l.Price,
+                City = l.City,
+                State = l.State,
+                Zip = l.Zip,
+                Image = l.Image,
+                StudentDto = l.Student != null ? new StudentDto
                 {
-                    studentId = l.student.studentId,
-                    name = l.student.name,
-                    email = l.student.email,
-                    phone = l.student.phone,
-                    major = l.student.major,
-                    graduationYear = l.student.graduationYear
+                    StudentId = l.Student.StudentId,
+                    Name = l.Student.Name,
+                    Email = l.Student.Email,
+                    Phone = l.Student.Phone,
+                    Major = l.Student.Major,
+                    GraduationYear = l.Student.GraduationYear
                 } : null
             }).ToList();
 
@@ -84,9 +84,9 @@ namespace HousingPortalApi.Controllers
             }
 
             var existingListing = await _housingPortalDbContext.Listings
-                .FirstOrDefaultAsync(l => l.title == listingDto.title &&
-                                          l.description == listingDto.description &&
-                                          l.address == listingDto.address);
+                .FirstOrDefaultAsync(l => l.Title == listingDto.Title &&
+                                          l.Description == listingDto.Description &&
+                                          l.Address == listingDto.Address);
 
             if (existingListing != null)
             {
@@ -96,16 +96,16 @@ namespace HousingPortalApi.Controllers
 
             Listing listing = new Listing
             {
-                listingId = Guid.NewGuid(),
-                title = listingDto.title,
-                description = listingDto.description,
-                address = listingDto.address,
-                price = listingDto.price,
-                city = listingDto.city,
-                state = listingDto.state,
-                zip = listingDto.zip,
-                image = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
-                student = studentResult
+                ListingId = Guid.NewGuid(),
+                Title = listingDto.Title,
+                Description = listingDto.Description,
+                Address = listingDto.Address,
+                Price = listingDto.Price,
+                City = listingDto.City,
+                State = listingDto.State,
+                Zip = listingDto.Zip,
+                Image = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
+                Student = studentResult
             };
 
             _housingPortalDbContext.Listings.Add(listing);
@@ -113,27 +113,27 @@ namespace HousingPortalApi.Controllers
 
             StudentDto studentDto = new StudentDto
             {
-                studentId = listing.student.studentId,
-                name = listing.student.name,
-                email = listing.student.email,
-                phone = listing.student.phone,
-                major = listing.student.major,
-                graduationYear = listing.student.graduationYear
+                StudentId = listing.Student.StudentId,
+                Name = listing.Student.Name,
+                Email = listing.Student.Email,
+                Phone = listing.Student.Phone,
+                Major = listing.Student.Major,
+                GraduationYear = listing.Student.GraduationYear
 
             };
 
             ListingDto createdListingDto = new ListingDto
             {
-                listingId = listing.listingId,
-                title = listing.title,
-                description = listing.description,
-                address = listing.address,
-                price = listing.price,
-                city = listing.city,
-                state = listing.state,
-                zip = listing.zip,
-                image = listing.image,
-                studentDto = studentDto
+                ListingId = listing.ListingId,
+                Title = listing.Title,
+                Description = listing.Description,
+                Address = listing.Address,
+                Price = listing.Price,
+                City = listing.City,
+                State = listing.State,
+                Zip = listing.Zip,
+                Image = listing.Image,
+                StudentDto = studentDto
             };
             return Ok(createdListingDto);
         }
@@ -145,8 +145,8 @@ namespace HousingPortalApi.Controllers
         public async Task<IActionResult> GetListing([FromRoute] Guid id)
         {
             Listing? listing = await _housingPortalDbContext.Listings
-           .Include(l => l.student)
-           .FirstOrDefaultAsync(x => x.listingId == id);
+           .Include(l => l.Student)
+           .FirstOrDefaultAsync(x => x.ListingId == id);
 
             if (listing == null)
             {
@@ -155,26 +155,26 @@ namespace HousingPortalApi.Controllers
 
             StudentDto studentDto = new StudentDto
             {
-                studentId = listing.student.studentId,
-                name = listing.student.name,
-                email = listing.student.email,
-                phone = listing.student.phone,
-                major = listing.student.major,
-                graduationYear = listing.student.graduationYear
+                StudentId = listing.Student.StudentId,
+                Name = listing.Student.Name,
+                Email = listing.Student.Email,
+                Phone = listing.Student.Phone,
+                Major = listing.Student.Major,
+                GraduationYear = listing.Student.GraduationYear
             };
 
             ListingDto listingDto = new ListingDto
             {
-                listingId = listing.listingId,
-                title = listing.title,
-                description = listing.description,
-                address = listing.address,
-                price = listing.price,
-                city = listing.city,
-                state = listing.state,
-                zip = listing.zip,
-                image = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
-                studentDto = studentDto
+                ListingId = listing.ListingId,
+                Title = listing.Title,
+                Description = listing.Description,
+                Address = listing.Address,
+                Price = listing.Price,
+                City = listing.City,
+                State = listing.State,
+                Zip = listing.Zip,
+                Image = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg",
+                StudentDto = studentDto
             };
 
             return Ok(listingDto);
@@ -200,49 +200,49 @@ namespace HousingPortalApi.Controllers
             }
 
             Listing? listing = await _housingPortalDbContext.Listings
-                .Include(l => l.student)
-                .FirstOrDefaultAsync(l => l.listingId == id);
+                .Include(l => l.Student)
+                .FirstOrDefaultAsync(l => l.ListingId == id);
 
             if (listing == null)
             {
                 return NotFound("Listing not found with the provided ID.");
             }
 
-            if (listing.studentId != studentId)
+            if (listing.StudentId != studentId)
             {
                 return BadRequest("You do not have permission to update this listing.");
             }
 
-            listing.title = updateListingDto.title;
-            listing.description = updateListingDto.description;
-            listing.address = updateListingDto.address;
-            listing.price = updateListingDto.price;
-            listing.city = updateListingDto.city;
-            listing.state = updateListingDto.state;
-            listing.zip = updateListingDto.zip;
-            listing.image = updateListingDto.image;
+            listing.Title = updateListingDto.Title;
+            listing.Description = updateListingDto.Description;
+            listing.Address = updateListingDto.Address;
+            listing.Price = updateListingDto.Price;
+            listing.City = updateListingDto.City;
+            listing.State = updateListingDto.State;
+            listing.Zip = updateListingDto.Zip;
+            listing.Image = updateListingDto.Image;
 
             await _housingPortalDbContext.SaveChangesAsync();
 
             ListingDto updatedListingDto = new ListingDto
             {
-                listingId = listing.listingId,
-                title = listing.title,
-                description = listing.description,
-                address = listing.address,
-                price = listing.price,
-                city = listing.city,
-                state = listing.state,
-                zip = listing.zip,
-                image = listing.image,
-                studentDto = new StudentDto
+                ListingId = listing.ListingId,
+                Title = listing.Title,
+                Description = listing.Description,
+                Address = listing.Address,
+                Price = listing.Price,
+                City = listing.City,
+                State = listing.State,
+                Zip = listing.Zip,
+                Image = listing.Image,
+                StudentDto = new StudentDto
                 {
-                    studentId = listing.student.studentId,
-                    name = listing.student.name,
-                    email = listing.student.email,
-                    phone = listing.student.phone,
-                    major = listing.student.major,
-                    graduationYear = listing.student.graduationYear
+                    StudentId = listing.Student.StudentId,
+                    Name = listing.Student.Name,
+                    Email = listing.Student.Email,
+                    Phone = listing.Student.Phone,
+                    Major = listing.Student.Major,
+                    GraduationYear = listing.Student.GraduationYear
                 }
             };
 
@@ -264,15 +264,15 @@ namespace HousingPortalApi.Controllers
             }
 
             Listing? listing = await _housingPortalDbContext.Listings
-                .Include(l => l.student)
-                .FirstOrDefaultAsync(x => x.listingId == id);
+                .Include(l => l.Student)
+                .FirstOrDefaultAsync(x => x.ListingId == id);
 
             if (listing == null)
             {
                 return NotFound("Listing not found with the provided ID.");
             }
 
-            if (listing.studentId != studentId)
+            if (listing.StudentId != studentId)
             {
                 return BadRequest("You do not have permission to delete this listing.");
             }
@@ -283,23 +283,23 @@ namespace HousingPortalApi.Controllers
 
             ListingDto deletedListingDto = new ListingDto
             {
-                listingId = listing.listingId,
-                title = listing.title,
-                description = listing.description,
-                address = listing.address,
-                price = listing.price,
-                city = listing.city,
-                state = listing.state,
-                zip = listing.zip,
-                image = listing.image,
-                studentDto = new StudentDto
+                ListingId = listing.ListingId,
+                Title = listing.Title,
+                Description = listing.Description,
+                Address = listing.Address,
+                Price = listing.Price,
+                City = listing.City,
+                State = listing.State,
+                Zip = listing.Zip,
+                Image = listing.Image,
+                StudentDto = new StudentDto
                 {
-                    studentId = listing.student.studentId,
-                    name = listing.student.name,
-                    email = listing.student.email,
-                    phone = listing.student.phone,
-                    major = listing.student.major,
-                    graduationYear = listing.student.graduationYear
+                    StudentId = listing.Student.StudentId,
+                    Name = listing.Student.Name,
+                    Email = listing.Student.Email,
+                    Phone = listing.Student.Phone,
+                    Major = listing.Student.Major,
+                    GraduationYear = listing.Student.GraduationYear
                 }
             };
 

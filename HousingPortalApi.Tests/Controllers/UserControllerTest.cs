@@ -20,6 +20,7 @@ using System.Diagnostics.Metrics;
 using System.Net.NetworkInformation;
 using System;
 using System.Numerics;
+using HousingPortalApi.Data;
 
 namespace HousingPortalApi.Tests.Controllers
 {
@@ -63,7 +64,7 @@ namespace HousingPortalApi.Tests.Controllers
             _mockJwtHandler.Setup(x => x.GetTokenAsync(It.IsAny<HousingPortalUser>(), It.IsAny<Claim[]>()))
                 .ReturnsAsync(new JwtSecurityToken());
 
-            var loginRequest = new LoginRequest { username = "nonexistentUser", password = "anyPassword" };
+            var loginRequest = new LoginRequest { Username = "nonexistentUser", Password = "anyPassword" };
 
             var result = await _controller.Login(loginRequest);
 
@@ -74,12 +75,12 @@ namespace HousingPortalApi.Tests.Controllers
         public async Task Login_CorrectCredentials_ReturnsOkResultWithToken()
         {
             var user = new HousingPortalUser { UserName = "existingUser" };
-            var loginRequest = new LoginRequest { username = "existingUser", password = "correctPassword" };
+            var loginRequest = new LoginRequest { Username = "existingUser", Password = "correctPassword" };
 
-            _mockUserManager.Setup(x => x.FindByNameAsync(loginRequest.username))
+            _mockUserManager.Setup(x => x.FindByNameAsync(loginRequest.Username))
                 .ReturnsAsync(user);
 
-            _mockPasswordHasherWrapper.Setup(x => x.VerifyHashedPassword(user, user.PasswordHash, loginRequest.password))
+            _mockPasswordHasherWrapper.Setup(x => x.VerifyHashedPassword(user, user.PasswordHash, loginRequest.Password))
                 .Returns(PasswordVerificationResult.Success);
 
             _mockJwtHandler.Setup(x => x.GetTokenAsync(user, It.IsAny<Claim[]>()))
@@ -89,34 +90,34 @@ namespace HousingPortalApi.Tests.Controllers
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var loginResult = Assert.IsType<LoginResult>(okResult.Value);
-            Assert.True(loginResult.success);
-            Assert.NotNull(loginResult.token);
+            Assert.True(loginResult.Success);
+            Assert.NotNull(loginResult.Token);
         }
 
         [Fact]
         public async Task Register_UserAlreadyExists_ReturnsBadRequest()
         {
-            var registerRequest = new RegisterRequest { username = "existingUser", email = "email@example.com", password = "Password123!" };
+            var registerRequest = new RegisterRequest { Username = "existingUser", Email = "email@example.com", Password = "Password123!" };
 
-            _mockUserManager.Setup(x => x.FindByNameAsync(registerRequest.username))
+            _mockUserManager.Setup(x => x.FindByNameAsync(registerRequest.Username))
                 .ReturnsAsync(new HousingPortalUser());
 
             var result = await _controller.Register(registerRequest);
 
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var registerResult = Assert.IsType<RegisterResult>(badRequestResult.Value);
-            Assert.False(registerResult.success);
-            Assert.Equal("Username already exists.", registerResult.message);
+            Assert.False(registerResult.Success);
+            Assert.Equal("Username already exists.", registerResult.Message);
         }
 
         [Fact]
         public async Task Register_NewUser_ReturnsOkResultWithToken()
         {
-            var registerRequest = new RegisterRequest { username = "newUser", email = "email@example.com", password = "Password123!", major = "Computer Science",
-                graduationYear = 2024, phone = "+(818)5107652"
+            var registerRequest = new RegisterRequest { Username = "newUser", Email = "email@example.com", Password = "Password123!", Major = "Computer Science",
+                GraduationYear = 2024, Phone = "+(818)5107652"
             };
 
-            _mockUserManager.Setup(x => x.FindByNameAsync(registerRequest.username))
+            _mockUserManager.Setup(x => x.FindByNameAsync(registerRequest.Username))
                 .ReturnsAsync((HousingPortalUser)null);
 
             _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<HousingPortalUser>()))
@@ -129,8 +130,8 @@ namespace HousingPortalApi.Tests.Controllers
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var registerResult = Assert.IsType<RegisterResult>(okResult.Value);
-            Assert.True(registerResult.success);
-            Assert.NotNull(registerResult.token);
+            Assert.True(registerResult.Success);
+            Assert.NotNull(registerResult.Token);
         }
 
         [Fact]
@@ -150,7 +151,7 @@ namespace HousingPortalApi.Tests.Controllers
         public async Task GetStudentDetails_ExistingStudent_ReturnsOkResultWithStudentDetails()
         {
             var studentId = Guid.NewGuid();
-            var studentDto = new StudentDto { studentId = studentId };
+            StudentDto studentDto = new StudentDto { StudentId = studentId };
 
             _mockStudentService.Setup(x => x.GetStudentDetails(studentId))
                 .ReturnsAsync(studentDto);
@@ -179,14 +180,14 @@ namespace HousingPortalApi.Tests.Controllers
         public async Task GetStudentListings_ExistingStudent_ReturnsOkResultWithListings()
         {
             var studentId = Guid.NewGuid();
-            var student = new Student
+            Student student = new Student
             {
-                studentId = studentId,
-                name = "Nithyasai",
-                email = "test@student.com",
-                phone = "1234567890",
-                major = "Computer Science",
-                graduationYear = 2024
+                StudentId = studentId,
+                Name = "Nithyasai",
+                Email = "test@student.com",
+                Phone = "1234567890",
+                Major = "Computer Science",
+                GraduationYear = 2024
             };
 
             _controller._housingPortalDbContext.Students.Add(student);
@@ -196,17 +197,17 @@ namespace HousingPortalApi.Tests.Controllers
             {
                 new Listing
                 {
-                    studentId = studentId,
-                    listingId = Guid.NewGuid(),
-                    title = "Spacious 2-bedroom apartment",
-                    description = "A comfortable 2-bedroom apartment near the city center.",
-                    address = "123 Main Street",
-                    price = 1200,
-                    city = "Los Angeles",
-                    state = "CA",
-                    zip = "12345",
-                    image = "https://example.com/apartment.jpg",
-                    student = student
+                    StudentId = studentId,
+                    ListingId = Guid.NewGuid(),
+                    Title = "Spacious 2-bedroom apartment",
+                    Description = "A comfortable 2-bedroom apartment near the city center.",
+                    Address = "123 Main Street",
+                    Price = 1200,
+                    City = "Los Angeles",
+                    State = "CA",
+                    Zip = "12345",
+                    Image = "https://example.com/apartment.jpg",
+                    Student = student
                 }
             };
 

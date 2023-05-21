@@ -7,29 +7,29 @@ namespace HousingPortalApi.Models
     public class Listing : AuditEntity
     {
         [Key]
-        public Guid listingId { get; set; }
+        public Guid ListingId { get; set; }
 
         [StringLength(100)]
-        public string title { get; set; }
+        public string Title { get; set; }
 
         [StringLength(1000)]
-        public string description { get; set; }
+        public string Description { get; set; }
         [Required]
-        public string address { get; set; }
+        public string Address { get; set; }
         [Required]
-        public decimal price { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string city { get; set; }
+        public decimal Price { get; set; }
         [Required]
         [StringLength(100)]
-        public string state { get; set; }
-        public string zip { get; set; }
-        public string image { get; set; }
+        public string City { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Image { get; set; }
 
         [ForeignKey("Student")]
-        public Guid studentId { get; set; }
-        public virtual Student student { get; set; }
+        public Guid StudentId { get; set; }
+        public virtual Student Student { get; set; }
  
     }
 }

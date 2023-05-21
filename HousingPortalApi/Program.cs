@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using HousingPortalApi;
 using HousingPortalApi.Services;
 using HousingPortalApi.Interfaces;
+using HousingPortalApi.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

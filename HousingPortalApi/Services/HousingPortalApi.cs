@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HousingPortalApi.Models;
 using HousingPortalApi.Dtos;
 using Microsoft.EntityFrameworkCore;
 using HousingPortalApi.Interfaces;
+using HousingPortalApi.Data;
 
 namespace HousingPortalApi.Services
 {
@@ -18,18 +18,18 @@ namespace HousingPortalApi.Services
 
         public async Task<StudentDto> GetStudentDetails(Guid studentId)
         {
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.studentId == studentId);
+            var student = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == studentId);
 
             if (student != null)
             {
                 return new StudentDto
                 {
-                    studentId = student.studentId,
-                    name = student.name,
-                    email = student.email,
-                    phone = student.phone,
-                    major = student.major,
-                    graduationYear = student.graduationYear
+                    StudentId = student.StudentId,
+                    Name = student.Name,
+                    Email = student.Email,
+                    Phone = student.Phone,
+                    Major = student.Major,
+                    GraduationYear = student.GraduationYear
                 };
             }
             return null;

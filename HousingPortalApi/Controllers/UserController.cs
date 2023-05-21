@@ -38,59 +38,59 @@ namespace HousingPortalApi.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            HousingPortalUser? user = await _userManager.FindByNameAsync(loginRequest.username);
+            HousingPortalUser? user = await _userManager.FindByNameAsync(loginRequest.Username);
 
             if (user == null)
             {
-                return Unauthorized(new LoginResult { success = false, message = "User not found." });
+                return Unauthorized(new LoginResult { Success = false, Message = "User not found." });
             }
 
-            if (_passwordHasherWrapper.VerifyHashedPassword(user, user.PasswordHash, loginRequest.password) != PasswordVerificationResult.Success)
+            if (_passwordHasherWrapper.VerifyHashedPassword(user, user.PasswordHash, loginRequest.Password) != PasswordVerificationResult.Success)
             {
-                return Unauthorized(new LoginResult { success = false, message = "Incorrect password." });
+                return Unauthorized(new LoginResult { Success = false, Message = "Incorrect password." });
             }
             JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
 
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
-            return Ok(new LoginResult { success = true, message = "Login successful", token = jwt });
+            return Ok(new LoginResult { Success = true, Message = "Login successful", Token = jwt });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            if (await _userManager.FindByNameAsync(registerRequest.username) != null)
+            if (await _userManager.FindByNameAsync(registerRequest.Username) != null)
             {
-                return BadRequest(new RegisterResult { success = false, message = "Username already exists." });
+                return BadRequest(new RegisterResult { Success = false, Message = "Username already exists." });
             }
 
-            if (await _userManager.FindByEmailAsync(registerRequest.email) != null)
+            if (await _userManager.FindByEmailAsync(registerRequest.Email) != null)
             {
-                return BadRequest(new RegisterResult { success = false, message = "Email already exists." });
+                return BadRequest(new RegisterResult { Success = false, Message = "Email already exists." });
             }
 
-            if (!passwordCheck.IsMatch(registerRequest.password))
+            if (!passwordCheck.IsMatch(registerRequest.Password))
             {
-                return BadRequest(new RegisterResult { success = false, message = "Password is too weak. It should be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character." });
+                return BadRequest(new RegisterResult { Success = false, Message = "Password is too weak. It should be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character." });
             }
 
-            HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.username, Email = registerRequest.email };
-            user.PasswordHash = _passwordHasherWrapper.HashPassword(user, registerRequest.password);
+            HousingPortalUser user = new HousingPortalUser { UserName = registerRequest.Username, Email = registerRequest.Email };
+            user.PasswordHash = _passwordHasherWrapper.HashPassword(user, registerRequest.Password);
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
             {
-                return BadRequest(new RegisterResult { success = false, message = "Registration failed. Try again." });
+                return BadRequest(new RegisterResult {Success = false, Message = "Registration failed. Try again." });
             }
 
             Student registeredStudent = new Student
             {
-                studentId = Guid.Parse(user.Id),
-                name = registerRequest.username,
-                email = registerRequest.email,
-                phone = registerRequest.phone,
-                major = registerRequest.major,
-                graduationYear = registerRequest.graduationYear
+                StudentId = Guid.Parse(user.Id),
+                Name = registerRequest.Username,
+                Email = registerRequest.Email,
+                Phone = registerRequest.Phone,
+                Major = registerRequest.Major,
+                GraduationYear = registerRequest.GraduationYear
             };
 
             _housingPortalDbContext.Students.Add(registeredStudent);
@@ -99,7 +99,7 @@ namespace HousingPortalApi.Controllers
             JwtSecurityToken secToken = await _jwtHandler.GetTokenAsync(user, new Claim[] { new Claim(ClaimTypes.NameIdentifier, user.Id) });
             string? jwt = new JwtSecurityTokenHandler().WriteToken(secToken);
 
-            return Ok(new RegisterResult { success = true, message = "Registration successful", token = jwt });
+            return Ok(new RegisterResult { Success = true, Message = "Registration successful", Token = jwt });
 
 
         }
@@ -119,29 +119,29 @@ namespace HousingPortalApi.Controllers
         public async Task<ActionResult<List<ListingDto>>> GetStudentListings(Guid studentId)
         {
             var listings = await _housingPortalDbContext.Listings
-                .Include(l => l.student)
-                .Where(l => l.studentId == studentId)
+                .Include(l => l.Student)
+                .Where(l => l.StudentId == studentId)
                 .ToListAsync();
 
             var listingDtos = listings.Select(l => new ListingDto
             {
-                listingId = l.listingId,
-                title = l.title,
-                description = l.description,
-                address = l.address,
-                price = l.price,
-                city = l.city,
-                state = l.state,
-                zip = l.zip,
-                image = l.image,
-                studentDto = new StudentDto
+                ListingId = l.ListingId,
+                Title = l.Title,
+                Description = l.Description,
+                Address = l.Address,
+                Price = l.Price,
+                City = l.City,
+                State = l.State,
+                Zip = l.Zip,
+                Image = l.Image,
+                StudentDto = new StudentDto
                 {
-                    studentId = l.student.studentId,
-                    name = l.student.name,
-                    email = l.student.email,
-                    phone = l.student.phone,
-                    major = l.student.major,
-                    graduationYear = l.student.graduationYear
+                    StudentId = l.Student.StudentId,
+                    Name = l.Student.Name,
+                    Email = l.Student.Email,
+                    Phone = l.Student.Phone,
+                    Major = l.Student.Major,
+                    GraduationYear = l.Student.GraduationYear
                 }
             }).ToList();
 
